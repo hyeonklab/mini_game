@@ -285,9 +285,11 @@ int search_bingo_line( const array<int, BINGO_NUMBERS>& arr )
 			++star_count;
 	}
 
+	LINE_TYPE line_type = LINE_TYPE::LINE_NONE;
 	if( star_count < 5 && star_count > save_count )
 	{
-		line_number = LINE_LTOP;
+		//line_number = LINE_TYPE::LINE_LTOP;
+		line_type = LINE_TYPE::LINE_LTOP;
 		save_count = star_count;
 	}
 
@@ -300,18 +302,20 @@ int search_bingo_line( const array<int, BINGO_NUMBERS>& arr )
 
 	if( star_count < 5 && star_count > save_count )
 	{
-		line_number = LINE_RTOP;
+		//line_number = LINE_RTOP;
+		line_type = LINE_TYPE::LINE_RTOP;
 		save_count = star_count;
 	}
 
-	return line_number;
+	return (line_type == LINE_TYPE::LINE_NONE) ? line_number : static_cast<int>(line_type);
 }
 
 int search_bingo_value( array<int, BINGO_NUMBERS>& arr, int line_number )
 {
 	int input = 0;
+	LINE_TYPE line_type = static_cast<LINE_TYPE>(line_number);
 	// 가로 줄 빙고 가능성 높은 줄에서, 별(★)로 설정 할 값 검색
-	if( line_number >= LINE_H1 && line_number <= LINE_H5 )
+	if( line_type >= LINE_TYPE::LINE_H1 && line_type <= LINE_TYPE::LINE_H5 )
 	{
 		for( int i = 0; i < 5; ++i )
 		{
@@ -323,7 +327,7 @@ int search_bingo_value( array<int, BINGO_NUMBERS>& arr, int line_number )
 		}
 	}
 	// 세로 줄 빙고 가능성 높은 줄에서, 별(★)로 설정 할 값 검색
-	else if( line_number >= LINE_V1 && line_number <= LINE_V5 )
+	else if( line_type >= LINE_TYPE::LINE_V1 && line_type <= LINE_TYPE::LINE_V5 )
 	{
 		for( int i = 0; i < 5; ++i )
 		{
@@ -335,7 +339,7 @@ int search_bingo_value( array<int, BINGO_NUMBERS>& arr, int line_number )
 		}
 	}
 	// 대각선 줄 빙고 가능성 높은 줄에서, 별(★)로 설정 할 값 검색 - 좌상단
-	else if( line_number == LINE_LTOP )
+	else if( line_type == LINE_TYPE::LINE_LTOP )
 	{
 		for( int i = 0; i < BINGO_NUMBERS; i += 6 )
 		{	// 좌상단 대각선 루프
@@ -347,7 +351,7 @@ int search_bingo_value( array<int, BINGO_NUMBERS>& arr, int line_number )
 		}
 	}
 	// 대각선 줄 빙고 가능성 높은 줄에서, 별(★)로 설정 할 값 검색 - 우상단
-	else if( line_number == LINE_RTOP )
+	else if( line_type == LINE_TYPE::LINE_RTOP )
 	{
 		for( int i = 4; i <= 20; i += 4 )
 		{	// 우상단 대각선 루프

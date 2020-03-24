@@ -14,8 +14,9 @@ enum class COM_LEVEL
 	COM_HARD
 };
 
-enum LINE_NUMBER
+enum class LINE_TYPE
 {
+	LINE_NONE = -1,
 	LINE_H1,	// 가로 줄 5개 (0-4)
 	LINE_H2,
 	LINE_H3,
